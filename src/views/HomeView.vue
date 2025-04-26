@@ -20,6 +20,7 @@
           <th>رقم</th>
           <th>السعة</th>
           <th>حجز</th>
+          <th>الحالة</th>
         </tr>
       </thead>
       <tbody>
@@ -27,9 +28,17 @@
           <td>{{ table.number }}</td>
           <td>{{ table.capacity }}</td>
           <td>
-            <button class="btn btn-secondary" @click="reserve(table.id)" :disabled="!selectedDate || !time">
-              احجز
+            <button class="btn btn-secondary" @click="table.status == 'Available' ? reserve(table.id) : ''"
+              :disabled="!selectedDate || !time || table.status !== 'Available'">
+              {{ table.status === 'Available' ? 'احجز الآن' : 'غير متاحة' }}
+
             </button>
+          </td>
+          <td
+            :class="table.status === 'Available' ? 'text-success fw-bolder' : table.status === 'Pending' ? 'text-danger fw-bolder' : 'text-warning fw-bolder'">
+            <span v-if="table.status === 'Available'">متاحة</span>
+            <span v-else-if="table.status === 'Pending'">محجوزة</span>
+            <span v-else>غير متاحة</span>
           </td>
         </tr>
       </tbody>
@@ -39,6 +48,8 @@
 </template>
 
 <script setup>
+import { formatDateTime } from "@/utils/dateFormatter";
+import { formatTime } from "@/utils/formatterTime";
 import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -53,6 +64,7 @@ const tables = ref([]);
 const loading = ref(false);
 const error = ref(null);
 
+
 // Get user from Vuex store
 const user = computed(() => store.state.user);
 
@@ -66,8 +78,8 @@ const reserve = async (tableId) => {
     loading.value = true;
     const res = await api.post('/reservations', {
       tableId: tableId,
-      date: selectedDate.value,
-      time: time.value
+      date: formatDateTime(selectedDate.value, 'en'),
+      time: formatTime(time.value),
     });
 
     if (res.status === 200) {

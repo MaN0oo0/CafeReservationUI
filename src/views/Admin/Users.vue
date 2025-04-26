@@ -15,12 +15,12 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
                     <td>
-                        <div class="form-group">
+                        <div class="form-group  d-flex gap-2">
                             <select v-model="user.role" @change="toggleRole(user)" class="form-control">
                                 <option value="Admin">مدير</option>
                                 <option value="User">مستخدم</option>
                             </select>
-                            <button @click="removeUser(user.id)">حذف</button>
+                            <button class="btn btn-sm btn-danger" @click="removeUser(user.id)">حذف</button>
                         </div>
                     </td>
                 </tr>
@@ -58,7 +58,7 @@ export default {
             if (r) r.status = 'تم التأكيد'
         },
         async removeUser(id) {
-            await api.delete(`/admin/users/${id}`)
+            await api.delete(`/admin/${id}`)
             this.users = this.users.filter(user => user.id !== id)
         }
     }

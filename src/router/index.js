@@ -16,7 +16,7 @@ const routes = [
   },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/my', component: UserDashboard, meta: { requiresAuth: true } },
+  { path: '/my', component: MyReservations, meta: { requiresAuth: true } },
 
   {
     path: '/home',

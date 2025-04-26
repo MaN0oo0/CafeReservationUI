@@ -66,5 +66,18 @@ nav a {
     border-radius: 5px;
     padding: 10px;
     width: 100%;
+    color:black;
+    font-size: 20px;
+    text-decoration: none;
+    text-align: center; 
+ 
+}
+a.router-link-exact-active {
+    color: white;
+    background: #333;
+    /* Dark text color on hover/active */
+    /* background: #fff; */
+    /* White background */
+    /* text-decoration: underline; */
 }
 </style>

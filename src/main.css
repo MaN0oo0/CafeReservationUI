@@ -1,12 +1,26 @@
 
 a{
-
+/* color: #fff; */
     text-decoration: none;
     padding: 0.5rem;
 }
 a.router-link-exact-active {
-    color: #fff;
-    text-decoration: none;
-    background-color: #0d6efd;
+    color: white;
+    /* Dark text color on hover/active */
+    /* background: #fff; */
+    /* White background */
     /* text-decoration: underline; */
+}
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-family: 'Poppins', sans-serif;
+    background: #555;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
 }

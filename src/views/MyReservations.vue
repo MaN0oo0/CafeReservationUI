@@ -1,23 +1,24 @@
 <template>
     <div class="my-reservations container">
         <h2>حجوزاتي</h2>
-        <table>
-            <thead>
-                <tr>
+        <table class="table table-bordered">
+            <thead class="">
+            
+                
                     <th>الطاولة</th>
                     <th>التاريخ</th>
                     <th>الوقت</th>
                     <th>الحالة</th>
                     <th>إجراء</th>
-                </tr>
+    
             </thead>
             <tbody>
                 <tr v-for="r in reservations" :key="r.id">
-                    <td>{{ r.table }}</td>
-                    <td>{{ r.date }}</td>
+                    <td>{{ r.table.number }}</td>
+                    <td>{{ formatDateTime(r.date,'en') }}</td>
                     <td>{{ r.time }}</td>
                     <td>{{ r.status }}</td>
-                    <td><button @click="cancel(r.id)" :disabled="r.status !== 'بانتظار'">إلغاء</button></td>
+                    <td><button class="btn btn-sm btn-danger" @click="cancel(r.id)" >إلغاء</button></td>
                 </tr>
             </tbody>
 
@@ -25,16 +26,31 @@
     </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import api from '@/services/api'
+import { formatDateTime } from '../utils/dateFormatter'
+export default {
+    data() {
+        return {
+            reservations: []
+        }
+    },
+    setup() {
+        return {
+            formatDateTime
+        }
+    },
+    async mounted() {
+        const res = await api.get('/reservations/my')
+        this.reservations = res.data
+    },
+    methods: {
+        async cancel(id) {
+            await api.delete(`/reservations/${id}`)
+            this.reservations = this.reservations.filter(r => r.id !== id)
+        }
+    },
 
-const reservations = ref([
-    { id: 1, table: 'A1', date: '2025-04-20', time: '18:00', status: 'بانتظار' },
-    { id: 2, table: 'B2', date: '2025-04-18', time: '20:00', status: 'مؤكد' }
-])
-
-const cancel = (id) => {
-    console.log('إلغاء الحجز رقم:', id)
 }
 </script>
 
